@@ -79,7 +79,7 @@
         IF( NOT(MSVC))
            set_target_properties(${test} PROPERTIES COMPILE_FLAGS "-isystem -pthread ")
         ENDIF( NOT(MSVC)) 
-        target_link_libraries(${test} g3log gtest_main)
+        target_link_libraries(${test} PRIVATE g3log gtest_main)
 		add_test( ${test} ${test} )
       ENDFOREACH(test)
    
@@ -88,12 +88,12 @@
     #     
     IF (NOT WIN32 AND NOT ("${CMAKE_CXX_COMPILER_ID}" MATCHES ".*Clang") AND G3_SHARED_LIB)
        add_library(tester_sharedlib SHARED ${DIR_UNIT_TEST}/tester_sharedlib.h ${DIR_UNIT_TEST}/tester_sharedlib.cpp)
-       target_link_libraries(tester_sharedlib ${G3LOG_LIBRARY})
+       target_link_libraries(tester_sharedlib PRIVATE ${G3LOG_LIBRARY})
 
        add_executable(test_dynamic_loaded_shared_lib ${g3log_SOURCE_DIR}/test_main/test_main.cpp ${DIR_UNIT_TEST}/test_linux_dynamic_loaded_sharedlib.cpp)
        set_target_properties(test_dynamic_loaded_shared_lib PROPERTIES COMPILE_DEFINITIONS "GTEST_HAS_TR1_TUPLE=0")
        set_target_properties(test_dynamic_loaded_shared_lib PROPERTIES COMPILE_DEFINITIONS "GTEST_HAS_RTTI=0")
-       target_link_libraries(test_dynamic_loaded_shared_lib  ${G3LOG_LIBRARY} -ldl gtest_main)
+       target_link_libraries(test_dynamic_loaded_shared_lib PRIVATE ${G3LOG_LIBRARY} -ldl gtest_main)
     ENDIF()
 ELSE() 
   message( STATUS "-DADD_G3LOG_UNIT_TEST=OFF" ) 

@@ -99,7 +99,7 @@ SET(ACTIVE_CPP0xx_DIR "Release")
 
 # find corresponding thread lib (e.g. whether -lpthread is needed or not)
 FIND_PACKAGE(Threads REQUIRED)
-TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} Threads::Threads )
+TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} PRIVATE Threads::Threads )
 
 # check for backtrace and cxa_demangle only in non-Windows dev environments
 IF(NOT(MSVC OR MINGW))
@@ -107,7 +107,7 @@ IF(NOT(MSVC OR MINGW))
 	FIND_PACKAGE(Backtrace REQUIRED)
 	if(Backtrace_FOUND)
 	  TARGET_INCLUDE_DIRECTORIES(${G3LOG_LIBRARY} PRIVATE ${Backtrace_INCLUDE_DIRS})
-	  TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} ${Backtrace_LIBRARIES})
+	  TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} PRIVATE ${Backtrace_LIBRARIES})
 	else()
 	  message( FATAL_ERROR "Could not find Library to create backtraces")
 	endif()
@@ -122,7 +122,7 @@ IF(NOT(MSVC OR MINGW))
 	   #try to link against c++abi to get demangle
 	   CHECK_LIBRARY_EXISTS(c++abi abi::__cxa_demangle "cxxabi.h" NEED_C++ABI)
 	   IF( NEED_C++ABI)
-	      TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} c++abi)
+	      TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} PRIVATE c++abi)
 	   ELSE()
 	   message( FATAL_ERROR "Could not find function abi::__cxa_demangle")
 	   ENDIF()
@@ -150,7 +150,7 @@ target_compile_options(${G3LOG_LIBRARY} PRIVATE
 # Windows Stuff
 IF(MSVC OR MINGW)
    TARGET_COMPILE_DEFINITIONS(${G3LOG_LIBRARY} PRIVATE NOGDI)
-   TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} dbghelp)
+   TARGET_LINK_LIBRARIES(${G3LOG_LIBRARY} PRIVATE dbghelp)
    # VC11 bug: http://code.google.com/p/googletest/issues/detail?id=408
    #          add_definition(-D_VARIADIC_MAX=10)
    # https://github.com/anhstudios/swganh/pull/186/files
