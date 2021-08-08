@@ -33,7 +33,7 @@
       # Turn on G3LOG performance flag
       set_target_properties(g3log-performance-threaded_mean PROPERTIES 
                             COMPILE_DEFINITIONS "G3LOG_PERFORMANCE=1")
-      target_link_libraries(g3log-performance-threaded_mean 
+      target_link_libraries(g3log-performance-threaded_mean PRIVATE
                              ${G3LOG_LIBRARY}  ${PLATFORM_LINK_LIBRIES})
 
      # WORST CASE PERFORMANCE TEST
@@ -42,7 +42,7 @@
      # Turn on G3LOG performance flag
      set_target_properties(g3log-performance-threaded_worst  PROPERTIES 
                            COMPILE_DEFINITIONS "G3LOG_PERFORMANCE=1")
-     target_link_libraries(g3log-performance-threaded_worst  
+     target_link_libraries(g3log-performance-threaded_worst  PRIVATE
                             ${G3LOG_LIBRARY}  ${PLATFORM_LINK_LIBRIES})
 
    ELSE()
